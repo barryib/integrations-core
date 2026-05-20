@@ -419,13 +419,13 @@ class InfrastructureMonitor:
         if host_name:
             self.host_names[host_id] = host_name
 
-        display_host_name = self._transform_hostname(host_name)
+        display_hostname = self._transform_hostname(host_name)
 
         host_tags = cluster_tags + self._extract_host_tags(host)
-        self.check.gauge("host.count", 1, hostname=display_host_name, tags=host_tags)
-        self._report_host_status_metrics(host, display_host_name, host_tags)
-        self._set_external_tags_for_host(display_host_name, host_tags)
-        self._report_host_capacity_metrics(host, display_host_name, host_tags)
+        self.check.gauge("host.count", 1, hostname=display_hostname, tags=host_tags)
+        self._report_host_status_metrics(host, display_hostname, host_tags)
+        self._set_external_tags_for_host(display_hostname, host_tags)
+        self._report_host_capacity_metrics(host, display_hostname, host_tags)
 
         try:
             stats = self._get_stats(f"api/clustermgmt/v4.0/stats/clusters/{cluster_id}/hosts/{host_id}")
@@ -435,7 +435,7 @@ class InfrastructureMonitor:
                     stats,
                     HOST_STATS_METRICS,
                     host_tags,
-                    hostname=display_host_name,
+                    hostname=display_hostname,
                     extra_tags_by_key=self._get_disk_status_storage_tags(host_id),
                 )
         except Exception:
